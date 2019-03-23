@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import index from '@/components/bookflow/index'
+import bookflow_index from '@/components/bookflow/index'
+import hot_web_index from '@/components/hot_web/index'
+import hot_web_about from '@/components/hot_web/about'
 
 Vue.use(Router)
 
@@ -15,7 +17,17 @@ export default new Router({
     {
       path: '/bookflow',
       name: 'bookflow',
-      component: index
+      component: bookflow_index
+    },
+    {
+      path: '/hot_web',
+      name: '/hot_web',
+      component: hot_web_index
+    },
+    {
+      path: '/hot_web/about',
+      name: '/hot_web_about',
+      component: hot_web_about
     }
   ]
 })
