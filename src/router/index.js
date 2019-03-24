@@ -20,12 +20,12 @@ export default new Router({
       component: bookflow_index
     },
     {
-      path: '/hot_web',
+      path: '/hot-web',
       name: '/hot_web',
       component: hot_web_index
     },
     {
-      path: '/hot_web/about',
+      path: '/hot-web/about',
       name: '/hot_web_about',
       component: hot_web_about
     }
