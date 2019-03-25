@@ -1,11 +1,10 @@
 <template>
-  <div style="background-color: #e5e4e9">
-    <div class="jumbotron text-center" style="margin-bottom:0">
-      <span>个人收藏云</span>
+  <div style="background-color: #e5e4e9; position: absolute; width: 100%; height: 100%;">
+    <div class="container" style="padding: 2rem">
+      <h2>个人收藏云</h2>
     </div>
-
-    <div class="container" style="margin-top:10px; padding-bottom: 20px">
-      <div class="row">
+    <div class="container">
+      <div class="row col-sm-12">
         <div class="col-sm-3 tag_box">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item" v-for="item in tag_list">
@@ -21,8 +20,7 @@
           </ul>
           <hr class="d-sm-none">
         </div>
-
-        <div class="col-sm-6 web-box">
+        <div class="col-sm-8 web-box">
           <div class="class">
             <a class="nav-link" v-bind:href="item.url" v-for="item in web_list">
               <span>{{ item.desc }}</span>
@@ -171,29 +169,14 @@
 </script>
 
 <style scoped>
-  .jumbotron {
-    padding: 1rem 1rem;
-    margin-bottom: 2rem;
-    background-color: #e5e4e9;
-    border-radius: 0.3rem;
-  }
-
-  @media (min-width: 576px) {
-    .jumbotron {
-      padding: 2rem 2rem;
-    }
-  }
-
   .tag_box {
-    margin: 8px 3px;
+    margin: 8px auto;
     background-color: #75c7b9;
-
     border-radius: 3%;
   }
 
   .web-box {
-    margin: 8px 3px;
-
+    margin: 8px auto;
     background-color: #bac6ca;
     border-radius: 3%;
   }
