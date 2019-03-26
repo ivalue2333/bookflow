@@ -8,7 +8,9 @@
         <div class="col-sm-3 tag_box">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item" v-for="item in tag_list">
-              <a class="nav-link" href="javascript:void(0)" @click="get_web_by_tag(item.id)">{{ item.name }}
+              <a class="nav-link" href="javascript:void(0)"
+                 @click="get_web_by_tag(item.id)"
+                 @dblclick="tag_delete_web_model(item.name, item.id)">{{ item.name }}
                 <span class="badge badge-success" @click="tag_add_web_model(item.id)" style="float: right">增加</span>
               </a>
             </li>
@@ -56,6 +58,22 @@
       </div>
     </div>
 
+    <div class="modal fade" id="tag_web_delete_model">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" v-model="choose_tag_name">
+              删除标签：<span style="color: #dc3545">{{ choose_tag_name}}</span></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-footer">
+            <button @click="delete_tag" type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="tag_add_model">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -93,6 +111,7 @@
         web_list: [],
 
         choose_tag_id: 0,
+        choose_tag_name: '',
         url_add: '',
         desc_add: '',
 
@@ -128,9 +147,20 @@
           this.get_tag_list();
           console.log(response.data['msg'])
         }).finally(() => {
-            this.tag_name_add = ''
+            this.tag_name_add = '';
           }
-        )
+        );
+      },
+
+      delete_tag: function () {
+        axios.delete('/api/v1/tags/' + this.choose_tag_id)
+          .then((response) => {
+            this.get_tag_list();
+          }).finally(() => {
+            this.choose_tag_id = 0;
+            window.location.reload();
+          }
+        );
       },
 
       get_web_by_tag: function (tag_id) {
@@ -143,6 +173,16 @@
       tag_add_web_model: function (tag_id) {
         this.choose_tag_id = tag_id;
         $('#tag_web_add_model').modal().css({
+          "margin-top": function () {
+            return ($(this).height() / 4);
+          }
+        })
+      },
+
+      tag_delete_web_model: function (tag_name, tag_id) {
+        this.choose_tag_id = tag_id;
+        this.choose_tag_name = tag_name;
+        $('#tag_web_delete_model').modal().css({
           "margin-top": function () {
             return ($(this).height() / 4);
           }
@@ -163,7 +203,6 @@
           this.desc_add = ''
         });
       }
-
     }
   }
 </script>
