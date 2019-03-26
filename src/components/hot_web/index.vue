@@ -147,7 +147,7 @@
           this.get_tag_list();
           console.log(response.data['msg'])
         }).finally(() => {
-            this.tag_name_add = ''
+            this.tag_name_add = '';
           }
         );
       },
@@ -156,9 +156,9 @@
         axios.delete('/api/v1/tags/' + this.choose_tag_id)
           .then((response) => {
             this.get_tag_list();
-            console.log(response.data['msg'])
           }).finally(() => {
-            this.choose_tag_id = 0
+            this.choose_tag_id = 0;
+            window.location.reload();
           }
         );
       },
