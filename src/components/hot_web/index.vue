@@ -4,13 +4,14 @@
       <h2>个人收藏云</h2>
     </div>
     <div class="container">
-      <div class="row col-sm-12">
+      <div class="row col-md-12">
         <div class="col-sm-3 tag_box">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item" v-for="item in tag_list">
               <a class="nav-link" href="javascript:void(0)"
                  @click="get_web_by_tag(item.id)"
-                 @dblclick="tag_delete_web_model(item.name, item.id)">{{ item.name }}
+                 @dblclick="tag_delete_web_model(item.name, item.id)">
+                {{ item.name }}
                 <span class="badge badge-success" @click="tag_add_web_model(item.id)" style="float: right">增加</span>
               </a>
             </li>
@@ -22,11 +23,19 @@
           </ul>
           <hr class="d-sm-none">
         </div>
-        <div class="col-sm-8 web-box">
+        <div class="col-sm-7 web-box">
           <div class="class">
-            <a class="nav-link" v-bind:href="item.url" v-for="item in web_list">
-              <span>{{ item.desc }}</span>
+            <a :id="item.id" class="nav-link web-item" v-bind:href="item.url"
+               v-for="item in web_list" draggable="true" @dragstart="drag_start(item.id, $event)"
+               target="_blank">
+              {{ item.desc }}
             </a>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="trash" @dragover="allow_drop($event)" @drop="drop($event)"
+               @dragenter="drag_enter()" @dragleave="drag_leave()">
+            垃圾桶
           </div>
         </div>
       </div>
@@ -117,6 +126,7 @@
 
         tag_name_add: '',
 
+        drag_item_id: -1,
       }
     },
     created: function () {
@@ -195,13 +205,49 @@
           'url': this.url_add,
           'desc': this.desc_add
         }).then((response) => {
-          console.log(response.data['msg'])
+          console.log(response.data['msg']);
           this.get_web_by_tag(this.choose_tag_id)
         }).finally(() => {
           this.choose_tag_id = 1;
           this.url_add = '';
           this.desc_add = ''
         });
+      },
+
+      drag_start: function (id, e) {
+        e.dataTransfer.setData("Text", event.target.id);
+        this.drag_item_id = id;
+      },
+
+      drag_enter: function () {
+        $('.trash').css('backgroundColor', 'darkgreen');
+      },
+
+      drag_leave: function () {
+        $('.trash').css('backgroundColor', 'lightgreen');
+      },
+
+      allow_drop: function (e) {
+        e.preventDefault();
+      },
+
+      drop: function (e) {
+        e.preventDefault();
+        let data = e.dataTransfer.getData("Text");
+
+        axios.delete('/api/v1/hot-webs/' + this.drag_item_id)
+          .then((response) => {
+            if (response.data.msg === '0k') {
+              console.log("删除成功");
+            } else {
+              console.log("删除失败");
+            }
+            this.get_tag_list();
+          }).finally(() => {
+            this.drag_item_id = -1;
+            document.getElementById(data).style.display = "none";
+          }
+        );
       }
     }
   }
@@ -223,6 +269,19 @@
   .web-item {
     margin-top: 8px;
     padding: 5px;
-    border-radius: 5%;
+  }
+
+  .trash {
+    position: absolute;
+    bottom: 0;
+    margin: 0 0 10px 0;
+    padding-top: 16px;
+    background-color: lightgreen;
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 10%;
   }
 </style>
