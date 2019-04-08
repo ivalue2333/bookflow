@@ -243,7 +243,7 @@
 
         axios.delete('/api/v1/hot-webs/' + this.drag_item_id)
           .then((response) => {
-            if (response.data.msg === '0k') {
+            if (response.data.msg === 'success') {
               console.log("删除成功");
               $('.trash').css('backgroundColor', 'lightgreen');
             } else {
