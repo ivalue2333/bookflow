@@ -200,6 +200,12 @@
       },
 
       add_web: function () {
+        if (this.url_add === null || this.url_add === '' ||
+          this.desc_add === null || this.desc_add === '') {
+          alert('[URL] and [DESC] are not null.');
+          return;
+        }
+
         axios.post('/api/v1/hot-webs/', {
           'tag_id': this.choose_tag_id,
           'url': this.url_add,
@@ -239,6 +245,7 @@
           .then((response) => {
             if (response.data.msg === '0k') {
               console.log("删除成功");
+              $('.trash').css('backgroundColor', 'lightgreen');
             } else {
               console.log("删除失败");
             }
