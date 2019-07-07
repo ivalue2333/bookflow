@@ -115,6 +115,7 @@
 
 <script>
   import axios from 'axios'
+  const UrlPrefix = 'https://';
 
   export default {
     name: 'index',
@@ -125,7 +126,7 @@
 
         choose_tag_id: 0,
         choose_tag_name: '',
-        url_add: '',
+        url_add: UrlPrefix,
         desc_add: '',
 
         tag_name_add: '',
@@ -135,13 +136,12 @@
     },
     created: function () {
       this.get_tag_list();
-      this.get_web_by_tag(1)
     },
 
     methods: {
       get_tag_list: function () {
         axios.get('/api/v1/tags').then((response) => {
-          this.tag_list = response.data['data'];
+          this.tag_list = response.data['tags'];
         })
       },
 
@@ -179,8 +179,7 @@
 
       get_web_by_tag: function (tag_id) {
         axios.get('/api/v1/tags/' + tag_id + '/hot-webs').then((response) => {
-          console.log(response.data['data']);
-          this.web_list = response.data['data'];
+          this.web_list = response.data['hot_webs'];
         })
       },
 
@@ -219,7 +218,7 @@
           this.get_web_by_tag(this.choose_tag_id)
         }).finally(() => {
           this.choose_tag_id = 1;
-          this.url_add = '';
+          this.url_add = UrlPrefix;
           this.desc_add = ''
         });
       },
