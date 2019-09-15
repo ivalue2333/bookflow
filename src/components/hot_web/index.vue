@@ -40,9 +40,6 @@
         </div>
       </div>
     </div>
-    <div class="container" style="padding: 2rem">
-      <a class="text-success" href="https://support.qq.com/products/65006">向我反馈</a>
-    </div>
 
 
     <!-- 模态框 -->
